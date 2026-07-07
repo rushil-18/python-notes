@@ -1,0 +1,211 @@
+1. Higher Order Function (HOF)
+Definition
+
+A Higher Order Function is a function that:
+
+Takes another function as an argument OR
+Returns another function.
+Example (Function as Parameter)
+def square(x):
+    return x * x
+
+def apply(func, value):
+    return func(value)
+
+print(apply(square, 5))
+
+Output
+
+25
+2. Function as a Variable
+
+Functions are objects in Python.
+
+def greet():
+    print("Hello")
+
+x = greet
+
+x()
+
+Output
+
+Hello
+
+Remember:
+
+greet → Function object
+greet() → Executes the function
+3. Function as a Parameter
+
+Pass a function into another function.
+
+def cube(x):
+    return x ** 3
+
+def operate(func, num):
+    return func(num)
+
+print(operate(cube, 2))
+
+Output
+
+8
+4. Function as Return Value
+
+A function can return another function.
+
+def square(x):
+    return x*x
+
+def choose():
+    return square
+
+f = choose()
+
+print(f(4))
+
+Output
+
+16
+5. Closure
+Definition
+
+A Closure is an inner function that remembers variables from the outer function even after the outer function finishes.
+
+def add_ten():
+
+    ten = 10
+
+    def add(x):
+        return x + ten
+
+    return add
+
+f = add_ten()
+
+print(f(5))
+
+Output
+
+15
+
+Memory Trick: Inner function "remembers" outer variables.
+
+6. Decorator
+Definition
+
+A Decorator adds extra functionality to an existing function without changing its code.
+
+def decorator(func):
+
+    def wrapper():
+        print("Before")
+        func()
+        print("After")
+
+    return wrapper
+
+@decorator
+def greet():
+    print("Hello")
+
+greet()
+
+Output
+
+Before
+Hello
+After
+
+@decorator means:
+
+greet = decorator(greet)
+7. map()
+Purpose
+
+Applies a function to every element of an iterable.
+
+Syntax
+map(function, iterable)
+Example
+numbers = [1,2,3]
+
+result = map(lambda x: x*x, numbers)
+
+print(list(result))
+
+Output
+
+[1,4,9]
+
+Memory Trick
+
+map = CHANGE every item
+8. filter()
+Purpose
+
+Keeps only the elements that satisfy a condition.
+
+Syntax
+filter(function, iterable)
+Example
+numbers = [1,2,3,4,5]
+
+result = filter(lambda x: x % 2 == 0, numbers)
+
+print(list(result))
+
+Output
+
+[2,4]
+
+Memory Trick
+
+filter = KEEP matching items
+9. reduce()
+Purpose
+
+Combines all elements into one final value.
+
+Syntax
+from functools import reduce
+
+reduce(function, iterable)
+Example
+from functools import reduce
+
+numbers = [1,2,3,4]
+
+result = reduce(lambda x,y: x+y, numbers)
+
+print(result)
+
+Output
+
+10
+
+Memory Trick
+
+reduce = COMBINE everything into one value
+10. Lambda Function
+Definition
+
+A lambda is a small anonymous function.
+
+Syntax
+lambda parameters : expression
+Example
+square = lambda x: x*x
+
+print(square(5))
+
+Output
+
+25
+
+Mostly used with:
+
+map()
+filter()
+reduce()

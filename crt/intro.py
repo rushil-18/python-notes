@@ -56,38 +56,76 @@ for A,B in zip(a,b):
     print(A,B)'''
 
 
-#BLINKIT
+# BLINKIT
 while(True):
     username = input("USERNAME : ")
     password = input("PASSWORD : ")
-
-
-    if (username and password is None):
+    if username != "" and password != "":
         print("user logged in")
-        break;
+        break
     else:
-        print("enter again")
+        print("try again...")
 
-print("========================\n")
-print("items :")
 
-items = ["apple" , "bananas", "mangoes"]
+print("========================")
+print("ITEMS :")
+
+items = ["apple", "bananas", "mangoes"]
+prices = {
+    "apple": 30,
+    "bananas": 40,
+    "mangoes": 60
+}
 cart = []
 print(items)
 
 while(True):
-    select = input("select the items in the list(type done when finished)")
+
+    select = input("\nselect the item in the list (type done when finished): ")
+
     if select == "done":
         break
 
     elif select in items:
         cart.append(select)
-        print("your cart consists of", select)
+        print(select, "added to cart")
+        print("your cart consists of", cart)
 
-    
-
-    else :
+    else:
         print("item not available")
+
+
+print("\n========================")
+print("YOUR CART")
+print("========================")
+
+total = 0
+
+for item in cart:
+    print(item, "-", prices[item])
+    total = total + prices[item]
+
+print("------------------------")
+print("Total amount =", total)
+
+
+if len(cart) == 0:
+    print("your cart is empty")
+
+else:
+    order = input("Do you want to place the order? (yes/no): ")
+
+    if order == "yes":
+        print("\n========================")
+        print("ORDER SUCCESSFUL")
+        print("========================")
+        print("Items:", cart)
+        print("Total amount:", total)
+        print("Order placed successfully")
+        print("Delivery in approximately 10 minutes")
+
+    else:
+        print("order cancelled")
 
 
 

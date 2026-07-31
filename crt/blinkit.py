@@ -1,62 +1,74 @@
 from random import random , randint
 def main():
     credentials = usercredentials()
-    categories = productcategories()
-    products = productselection()
+    while True:
+
+        cart = []
+        categories = productcategories()
+        productselection(category, cart)
+        choice = input("Do you want to shop another category(yes/no)").lower().strip()
+
+        if choice == "no":
+            break
+
+        print(cart)
+
 
 def usercredentials():
     while True:
-        
-        username =  input("enter your mobile number : ")
-        if len((username)) == 10 and username != "" :
-            break
-        else :
-            print("enter a 10digit phone number")
+        try:
 
-         
-            
+            username =  int(input("enter your mobile number : "))
+            if(len(str(username))) == 10:
+
+                break
+            else :
+                print("enter a 10digit phone number")
+        except Exception as e:
+            print("Enter a valid mobile number")
+    otp = randint(1000,9999)     
+    while True:
+        try:
+
                 
             
-        otp = randint(1000,9999)                     
-        print("your otp is : ", otp)
-        password = int(input("enter otp : "))
+            otp = randint(1000,9999)                     
+            print("your otp is : ", otp)
+            password = int(input("enter otp : "))
 
-        if  password != "":
-            if password == otp:
+            if  password != "" and password == otp:
+                
 
                 print("user logged in")
-                break;
+                break
             else :
                 print("enter valid otp")
+        except Exception as e:
+            print("enter a vallid otp")
             
           
 
 def productcategories():
     print("Categories you'd want to explore:")
-    categories = ["dairy" , "snacks" , "electronics"]
-    for category in categories : 
-        print(category)
-    userselection = input("enter a category you'd like to explore : ").lower().strip()
+    products = {
+        "dairy" :{"milk" : 32 , "cheese" : 100, "butter" : 200},
+        "snacks":{"chips" : 20 ,"coke" : 40, "kachori" : 40 },
+        "electronics" : {"earphones" : 100, "headphones" : 500, "phone" : 10000}
+    }              #a way to go back to a category and select products 
+    while True :
+        for category in products:
+            print(category) 
+                     #prints only keys   
+            
+        choice = input("enter the category :").lower().strip()
+        if choice in products :
+            return products[choice]
+        else :
+            print("wrong category select again")
 
-    if userselection == "dairy":
-        dairy = {"milk" : 32, "cheese":100, "butter" : 150 }
-        for dairyproducts in dairy:
-            print("products in this catrgory :" ,dairyproducts,dairy[dairyproducts])           #a way to print prices as well
+            
 
-
-    elif userselection == "snacks":
-        snacks = {"chips":20, "coke":45, "chakodi": 50}
-        for snack in snacks:
-            print("products in this catrgory :", snack, snacks[snack])  #only snack gives keys. snacks[snack] gives key value pair
-
-    elif userselection == "electronics":
-        electronics = {"earphones":250, "headphones" : 500, "phone" : 1000 }
-        for electronic in electronics:
-
-            print("products in this catrgory :", electronic, electronics[electronic])                #a way to go back to a category and select products 
-
-
-def productselection():
+def productselection(category, cart):
     products = []
     while True:
         for product in products:
@@ -68,6 +80,6 @@ def productselection():
                 print(f"You have selected the following products : {product}")
                       
 
-        print(f"Your cart consists of :" {products, }) 
+
 
 main()

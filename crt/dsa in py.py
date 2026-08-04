@@ -44,3 +44,30 @@ def fibonacci(n):
             b = c
 
 
+
+#dsa problems 
+
+
+
+#atm functional
+
+def main():
+    card_insert = cardinserted()
+
+def cardinserted():
+    
+    cardinsert = input("Please insert your card (type yes/no if inserted or not)").strip().lower()
+    while True:
+        if cardinsert == "yes":
+            break
+            print("user logged in")
+        else :
+            print("please insert card")
+
+
+main()
+
+
+
+
+

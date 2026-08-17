@@ -1,0 +1,81 @@
+1.initialize fastapi in main
+from fastapi import FastAPI
+app = FastAPI()
+
+2.router 
+from fastapi import APIRouter
+router = APIRouter()
+@router.get("/accounts")
+def get_accounts():
+    return {"message": "routers check"}
+
+3. combining routes to main
+from app.routers.accounts import router as account_router
+app.include_router(account_router)
+
+4.create psql database and install  pip install sqlalchemy psycopg2-binary 
+5. Database connection - database.py
+from sqlalchemy import create_engine
+DATABASE_URL = ""
+engine = create_engine(DATABASE_URL)
+with engine.connect() as connection:
+    print("success")       #TEST - python -m app.database
+
+6. now you may hide the database DATABASE_URL - database.py
+pip install python-dotenv
+in .env DATABASE_URL = ""
+optional : .env.example: DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/social_media
+.gitignore : .venv/
+.env
+__pycache__/
+
+import os 
+from dotenv import load_dotenv
+load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL)
+
+
+7.DATABASE MODEL - STRUCUTRE OF TABLE - models/accounts 
+in database.py -> from sqlalchemy.orm import declarative_base
+Base = declarative_base() 
+
+in models/accounts.py -> from sqlalchemy import Column, Integer, String , Text, Boolean
+from.app.database import Base
+class Account(Base):
+    __tablename__=" " 
+    #structure of the table 
+
+8. Sessions - 
+database.py -> 
+from sqlalchemy.orm import sessionmaker
+SessionLocal = sessionmaker(autocommit = False , autoflush = False, bind = engine)
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+9. Making sqlalchemy know about the model.
+main.py
+from app.database import engine, Base
+from app.models.accounts import Account
+Base.metadata.create_all(bind=engine)
+#run it
+fastapi dev app/main.py
+
+
+10.using database session in route - 
+from FastAPI import Depends
+from FastAPI import Session
+from app.database import get_db
+@router.get("/accounts")
+def get_accounts(
+    db: Session = Depends(get_db)
+):
+    return {"message": "routers check"}
+
+
+############CRUD OPERATIONS WITH DATABASE################

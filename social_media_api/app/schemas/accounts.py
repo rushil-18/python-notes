@@ -14,3 +14,8 @@ class AccountResponse(BaseModel):
     is_active: bool
 
     
+    class Config:
+        from_attributes = True   #It tells Pydantic:
+
+#"I may give you a SQLAlchemy object instead of a normal dictionary."
+#" Read its attributes and turn them into this response model."

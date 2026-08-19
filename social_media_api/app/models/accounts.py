@@ -1,4 +1,5 @@
-from sqlalchemy import Column , Integer , Text , Boolean , String
+from sqlalchemy import Column , Integer , Text , Boolean , String, ForeignKey
+from sqlalchemy.orm import relationship
 from app.database import Base
 
 class Account(Base):
@@ -10,5 +11,12 @@ class Account(Base):
     full_name = Column(String, nullable=False)
     bio = Column(Text, nullable=True)
     is_active = Column(Boolean, default=True)
+    posts = relationship("Post",back_populates= "account")
 
-    
+
+class Posts(Base):
+    __tablename__ = "posts"
+    id = Column(Integer , primary_key= True , index= True)
+    content = Column(String , nullable = False)
+    account_id = Column(Integer , ForeignKey("accounts.id"), nullable = False)
+    account = relationship("Account" , back_populates= "posts")

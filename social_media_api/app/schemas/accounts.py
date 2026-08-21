@@ -19,3 +19,15 @@ class AccountResponse(BaseModel):
 
 #"I may give you a SQLAlchemy object instead of a normal dictionary."
 #" Read its attributes and turn them into this response model."
+
+class PostCreate(BaseModel):
+    content : str
+
+class PostResponse(BaseModel):
+    id : int
+    content : str 
+    account_id : int
+
+    class Config:
+        from_attributes = True
+

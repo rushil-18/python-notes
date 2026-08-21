@@ -11,7 +11,7 @@ class Account(Base):
     full_name = Column(String, nullable=False)
     bio = Column(Text, nullable=True)
     is_active = Column(Boolean, default=True)
-    posts = relationship("Post",back_populates= "account")
+    posts = relationship("Posts",back_populates= "account")
 
 
 class Posts(Base):

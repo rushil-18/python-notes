@@ -178,9 +178,51 @@ accounts_id refers to  in accounts.id
 
 from sqlalchemy.orm import relationship
 class Account(Base):
-    posts = relationship("Post",back_populates= "account")
+    posts = relationship("Posts",back_populates= "account")
 class Post(Base):
     account = relationship("Account" , back_populates = "posts")
     
 relationship()
 Gives SQLAlchemy a convenient Python-side way to navigate the relationship.
+
+create schemas for database and then schemas/models for pydantic creation and response for posts
+
+create routers based on that    
+
+
+
+
+
+======AUTHENTICATION AND SECURITY===========
+->Password hashing     - "How do we safely store passwords?"  pip install "passlib[bcrypt]" -  hashes the password  
+->User registration    - "How do we create an account?" 
+->Login                - "How do we verify credentials?"
+->JWT                  -  "How do we remember user is authenticated"
+->Authentication dependency 
+->Protected routes     - "How do we prevent unauthenticated access?"
+->Authorization 
+app/security.py 
+from passlib.context import CryptContext
+password_context = CryptContext(schemes=["bcrypt"],deprecated="auto")
+
+def hash_password(password: str):
+    # Converts plain-text password into a hash
+    return password_context.hash(password)
+
+def verify_password(plain_password: str, hash_password: str):
+    # Checks whether a plain password matches the stored hash
+    return password_context.verify(plain_password,hash_password)
+app/routers.py
+from app.security import hash_password , verify_password
+in post model : 
+@router.post("/accounts" , status_code= 201, response_model= AccountResponse)
+def create_account(account : AccountsCreate , db : Session = Depends(get_db)): #account creating and session
+    new_account = Account(                                  #from the table base model to new object attributes of sqlalchemy
+        username = account.username,
+        email = account.email,
+        password = hash_password(account.password),     #########
+        full_name = account.full_name,
+        bio = account.bio
+    )   
+why not in pydantic or database? classes
+

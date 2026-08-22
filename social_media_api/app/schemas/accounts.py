@@ -20,6 +20,7 @@ class AccountResponse(BaseModel):
 #"I may give you a SQLAlchemy object instead of a normal dictionary."
 #" Read its attributes and turn them into this response model."
 
+#relations
 class PostCreate(BaseModel):
     content : str
 
@@ -30,4 +31,12 @@ class PostResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+#security 
+class LoginRequest(BaseModel):
+    username : str
+    password : str
+
+    
 

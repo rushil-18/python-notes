@@ -226,3 +226,23 @@ def create_account(account : AccountsCreate , db : Session = Depends(get_db)): #
     )   
 why not in pydantic or database? classes
 
+NOW MAKING A LOGIN INTERFACE TO UNDERSTAND JWT - 
+schemas.accounts -> class loginreq(basemodel):
+username : str 
+password : str
+
+@router.post("/login")
+def login(login_data : LoginRequest , db : Session = Depends(get_db)):
+    account = db.query(Account).filter(Account.username == login_data.username).first()
+    if account is None:                                                                       #find acc
+        raise HTTPException(status_code= 401 , detail = "no account found with username")
+    
+    if not verify_password(login_data.password, account.password):
+        raise HTTPException(status_code = 401 , detail = "incorrect password")    #verify_password 
+
+    return {"Message" : "Login Successful",
+            "account_id" : account.id}
+
+
+JWT : json web token 
+pip install python-jose[cryptography]

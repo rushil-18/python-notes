@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.schemas.accounts import AccountsCreate, AccountResponse
+from app.schemas.accounts import AccountsCreate, AccountResponse , LoginRequest
 from app.schemas.accounts import PostCreate, PostResponse
 from app.models.accounts import Account
 from app.models.accounts import Posts
@@ -127,4 +127,19 @@ def delete_post(post_id : int , db : Session = Depends(get_db)):
     db.delete(post)
     db.commit() 
     return post
+
+
+
+#SECURITY 
+@router.post("/login")
+def login(login_data : LoginRequest , db : Session = Depends(get_db)):
+    account = db.query(Account).filter(Account.username == login_data.username).first()
+    if account is None:
+        raise HTTPException(status_code= 401 , detail = "no account found with username")
+    
+    if not verify_password(login_data.password, account.password):
+        raise HTTPException(status_code = 401 , detail = "incorrect password")
+
+    return {"Message" : "Login Successful",
+            "account_id" : account.id}
 
